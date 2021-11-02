@@ -8,31 +8,23 @@ import java.time.LocalDate
 @Document("quotes")
 class QuoteDAO(
     @Id
-    val id: String = "",
+    val id: Int,
     var quote: String = "",
     var author: String = "",
     var date: LocalDate? = null,
     var stars: Int = 0,
     var isTopRated: Boolean = false,
-
-    private var category: String? = null
+    var category: String? = null
 ) {
     @Transient
     var categoryQuote: CategoryQuoteEnum? = null
         get() {
-            return CategoryQuoteEnum.valueOf(category!!.uppercase())
+            val valueOf = CategoryQuoteEnum.valueOf(category!!.uppercase())
+            category = valueOf.value
+            return valueOf
         }
         set(value) {
-            category = value?.toValue()
+            category = value?.value
             field = value
         }
-
-    /*
-    fun category(): CategoryQuoteEnum {
-        return CategoryQuoteEnum.fromValue(category)
-    }
-
-    fun setCategory(cate: CategoryQuoteEnum) {
-        this.category = cate.toValue()
-    }*/
 }
